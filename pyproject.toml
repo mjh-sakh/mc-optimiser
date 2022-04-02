@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "mc-optimiser"
+version = "0.1.0"
+description = "Tool to find parameters for given simulation to achieve max or min provided with utility function"
+authors = ["Andrey Oskin <oskin.a.v@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.1.1"
+mypy = "^0.942"
+wemake-python-styleguide = "^0.16.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

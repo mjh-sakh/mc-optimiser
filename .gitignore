@@ -1,0 +1,16 @@
+# IDEs
+.venv
+.vscode
+.idea
+.tool-versions
+
+# TMP
+.DS_Store
+*.swp
+dist
+__pycache__
+
+# Coverage
+.coverage
+coverage.xml
+htmlcov
