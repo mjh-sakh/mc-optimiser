@@ -10,13 +10,13 @@ publish:
 	poetry publish --dry-run
 
 lint:
-	poetry run flake8 mc-optimiser
+	poetry run flake8 mc_optimiser
 
 reps:
 	poetry show --tree
 
 test:
-	poetry run mypy mc-optimiser
+	poetry run mypy mc_optimiser
 	poetry run coverage run -m pytest
 
 coverage:
