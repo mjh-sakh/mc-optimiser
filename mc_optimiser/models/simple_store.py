@@ -6,7 +6,7 @@ from functools import reduce
 from mc_optimiser.models.base import BaseModel
 
 
-class SimpleShopModel(BaseModel):  # noqa: WPS230 as it has many internal params
+class SimpleShopModel(BaseModel):  # noqa: WPS214, WPS230 as it has many internal params and methods
     def __init__(self, refill_factor: float, days_to_run: int = 100):
         """
         Simple shop simulation where each day customers come and buy items.
@@ -17,7 +17,7 @@ class SimpleShopModel(BaseModel):  # noqa: WPS230 as it has many internal params
         Arguments:
             refill_factor: how many items to stock based on rating
             days_to_run: length of simulation, days
-        """
+        """  # noqa: D401 description of a class
         self.refill_factor = refill_factor
         self.days_to_run = days_to_run
 
@@ -30,17 +30,20 @@ class SimpleShopModel(BaseModel):  # noqa: WPS230 as it has many internal params
         self.box_cost = self.box_capacity * self.item_cost
         self.profit = 0
         self.expenses = 0
-        self.boxes: list[Box] = [Box(self.box_capacity, self.shelf_life) for _ in range(self.boxes_count)]  # noqa: E501, WPS221 as easy
+        self.boxes: list[Box] = [
+            Box(self.box_capacity, self.shelf_life)
+            for _ in range(self.boxes_count)
+        ]
 
     @property
     def max_traffic(self) -> int:
         """Max traffic based on rating."""
-        return max(1, int(self.rating * 10))
+        return max(1, int(self.rating * 10))  # noqa: DAR201
 
     @property
     def revenue(self) -> int:
         """Calc revenue."""
-        return self.profit - self.expenses
+        return self.profit - self.expenses  # noqa: DAR201
 
     def update_rating(self, direction: str) -> None:
         """
@@ -93,10 +96,25 @@ class SimpleShopModel(BaseModel):  # noqa: WPS230 as it has many internal params
             [box.tick() for box in self.boxes]  # noqa: WPS428 as it has effect
             self.refill()
 
+    def reset(self) -> None:
+        """Reset model to prepare to run again."""
+        self.expenses = 0
+        self.profit = 0
+        self.boxes: list[Box] = [
+            Box(self.box_capacity, self.shelf_life)
+            for _ in range(self.boxes_count)
+        ]
+
 
 class Box:
     def __init__(self, capacity: int, shelf_life: int):
-        """Box container."""
+        """
+        Box container.
+
+        Arguments:
+            capacity: box max level, int
+            shelf_life: days before all is trashed, int
+        """
         self.capacity = capacity
         self.level = 0  # has to be refilled after creation
         self.shelf_life = shelf_life
@@ -107,7 +125,8 @@ class Box:
         """
         Indicate if box is empty.
 
-        :return: True if empty, else False
+        Returns:
+            True if empty, else False
         """
         return not bool(self.level)
 
@@ -115,7 +134,9 @@ class Box:
         """
         Take one item from the box.
 
-        :return: True if successful, else False
+        Returns:
+            True if successful, else False
+            True if successful, else False
         """
         if self.is_empty:
             return False
