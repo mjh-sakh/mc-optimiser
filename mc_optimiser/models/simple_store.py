@@ -27,7 +27,6 @@ class SimpleShopModel(BaseModel):  # noqa: WPS214, WPS230 as it has many interna
         self.shelf_life = 3
         self.item_cost = 100  # we pay
         self.item_price = 150  # we get
-        self.box_cost = self.box_capacity * self.item_cost
         self.profit = 0
         self.expenses = 0
         self.boxes: list[Box] = [
@@ -39,6 +38,11 @@ class SimpleShopModel(BaseModel):  # noqa: WPS214, WPS230 as it has many interna
     def max_traffic(self) -> int:
         """Max traffic based on rating."""
         return max(1, int(self.rating * 10))  # noqa: DAR201
+
+    @property
+    def box_cost(self):
+        """Entire box cost."""
+        return self.box_capacity * self.item_cost  # noqa: DAR201
 
     @property
     def revenue(self) -> int:
@@ -100,6 +104,7 @@ class SimpleShopModel(BaseModel):  # noqa: WPS214, WPS230 as it has many interna
         """Reset model to prepare to run again."""
         self.expenses = 0
         self.profit = 0
+        self.rating = 5
         self.boxes: list[Box] = [
             Box(self.box_capacity, self.shelf_life)
             for _ in range(self.boxes_count)
